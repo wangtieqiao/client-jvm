@@ -13,7 +13,9 @@ buildscript {
 }
 
 plugins {
-    val v = "1.3.61"
+//    val v = "1.3.61"
+    val v = "1.4.21"
+
     `java-library`
     kotlin("jvm") version "$v"
     kotlin("plugin.serialization") version "$v"
@@ -66,4 +68,15 @@ tasks {
         add("archives", sourcesJar)
         add("archives", jar)
     }
+}
+
+tasks.withType<Jar> {
+    // Otherwise you'll get a "No main manifest attribute" error
+    // To add all of the dependencies otherwise a "NoClassDefFoundError" error
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 }

@@ -13,6 +13,7 @@ import io.ktor.http.DEFAULT_PORT
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.Interceptor
 
 interface HttpClientProvider {
@@ -56,12 +57,16 @@ constructor(
 ) : HttpClientProvider {
 
     open fun buildEngine(): HttpClientEngine = engine
-
     override fun buildClient() =
         HttpClient(buildEngine()) {
             install(WebSockets)
             install(JsonFeature) {
-                serializer = KotlinxSerializer(Json.Default)
+                serializer = KotlinxSerializer(Json {
+                    isLenient = false
+                    ignoreUnknownKeys = true
+                    allowSpecialFloatingPointValues = true
+                    useArrayPolymorphism = true
+                })
             }
         }
 
@@ -70,4 +75,5 @@ constructor(
             protocol = URLProtocol.HTTPS,
             port = DEFAULT_PORT
         )
+
 }

@@ -52,7 +52,12 @@ constructor(
 ) {
 
     private val serializer by lazy {
-       Json.Default
+        Json {
+            isLenient = false
+            ignoreUnknownKeys = true
+            allowSpecialFloatingPointValues = true
+            useArrayPolymorphism = true
+        }
     }
 
     private var activeConnection: WebSocketConnection? = null
