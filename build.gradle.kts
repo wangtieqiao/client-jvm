@@ -69,14 +69,3 @@ tasks {
         add("archives", jar)
     }
 }
-
-tasks.withType<Jar> {
-    // Otherwise you'll get a "No main manifest attribute" error
-    // To add all of the dependencies otherwise a "NoClassDefFoundError" error
-    from(sourceSets.main.get().output)
-
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-}
