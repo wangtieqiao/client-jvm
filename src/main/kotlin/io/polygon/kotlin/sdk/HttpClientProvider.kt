@@ -62,7 +62,7 @@ constructor(
             install(WebSockets)
             install(JsonFeature) {
                 serializer = KotlinxSerializer(Json {
-                    isLenient = false
+                    isLenient = true
                     ignoreUnknownKeys = true
                     allowSpecialFloatingPointValues = true
                     useArrayPolymorphism = true

@@ -53,7 +53,7 @@ constructor(
 
     private val serializer by lazy {
         Json {
-            isLenient = false
+            isLenient = true
             ignoreUnknownKeys = true
             allowSpecialFloatingPointValues = true
             useArrayPolymorphism = true
